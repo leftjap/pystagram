@@ -1,0 +1,10 @@
+{% if form.is_multipart %}
+<form method="POST" action="{{request.path}}" enctype="multipart/form-data">
+    {% else %}
+    <form method="POST" action="{{request.path}}">
+        {% endif %}
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <input type="submit" value="저장해라" />
+    </form>
