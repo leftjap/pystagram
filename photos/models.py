@@ -14,3 +14,13 @@ class Photo(models.Model):
     def __unicode__(self):
         return u"{0} - '{1}'".format(self.id, self.user)
 
+class Comment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    photo = models.ForeignKey(Photo)
+    content = models.TextField(null=False, max_length=500)
+    created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated_at = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    def __unicode__(self):
+        return u"{0} 'photo:{1}'".format(self.id, self.photo.id)
+        
