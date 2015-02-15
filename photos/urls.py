@@ -4,4 +4,5 @@ urlpatterns = patterns('photos.views',
     url(r'^$', 'toppage', name='photo_toppage'),
     url(r'^(?P<photo_id>[0-9]+)/$', 'single_photo'),
     url(r'^create/$', 'edit_photo'),
+    url(r'^(?P<photo_id>[0-9]+)/comment/$', 'single_photo', name='edit_photo_comment'),
 )

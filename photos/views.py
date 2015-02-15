@@ -6,7 +6,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from photos.models import Photo
-from photos.forms import PhotoModelForm
+from photos.forms import PhotoModelForm, CommentModelForm
 from django.contrib.auth.decorators import login_required
 
 def toppage(request):
@@ -18,18 +18,31 @@ def single_photo(request, photo_id):
 
     photo = get_object_or_404(Photo, pk=photo_id)
 
-    _res = render(
+    if request.method == "GET":
+        comment_form = CommentModelForm()
+    elif request.method == "POST":
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('login_url'))
+
+        comment_form = CommentModelForm(request.POST)
+        if comment_form.is_valid():
+            _comment = comment_form.save(commit=False)
+            _comment.user = request.user
+            _comment.photo = photo
+            _comment.save()
+
+            return HttpResponseRedirect(request.path)
+
+    return render(
         request,
         'single_photo.html',
         {
             'photo': photo,
+            'comment_form':comment_form,
         }
     )
-    _res['my_header'] = 'hannal'
 
-    return _res
-
-from photos.forms import PhotoModelForm
+    
 
 @login_required
 def edit_photo(request, photo_id=None):

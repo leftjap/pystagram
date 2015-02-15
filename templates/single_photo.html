@@ -13,8 +13,23 @@
 
     <ul>
         <li>{{photo.id}}<br />
-            <img src="{{photo.image_file.url}}" />
-        </li>
+            <img src="{{photo.image_file.url}}" /></li>
+        <li>{{photo.description}}</li>
     </ul>
+
+    {% if photo.comment_set.count %}
+    <ul>
+        {% for comment in photo.comment_set.all %}
+        <li><span>{{comment.user}}</span> : {{comment.content}} ({{comment.updated_at}})</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="POST" action="{% url 'edit_photo_comment' photo.id %}">
+        {% csrf_token %}
+        {{comment_form.as_p}}
+
+        <p><input type="submit" value="댓글 달자" /></p>
+    </form>
 </body>
 </html>

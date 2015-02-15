@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from django import forms
-from .models import Photo
+from .models import Photo, Comment
 
 class PhotoModelForm(forms.ModelForm):
     class Meta:
@@ -13,4 +13,3 @@ class CommentModelForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('content',)
-        
